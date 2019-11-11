@@ -1,8 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE NoImplicitPrelude #-}
-
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Todos
   ( getTodos
@@ -18,14 +16,30 @@ import qualified Control.Lens as L
 import Config (baseURL)
 
 
-
-
 data Todo = Todo
-  { userId :: Int
-  , title :: T.Text
-  , completed :: Bool
+  { todoUserId :: Int
+  , todoTitle :: T.Text
+  , todoCompleted :: Bool
   }
-  deriving (Show, Generic, AE.ToJSON, AE.FromJSON)
+  deriving (Show)
+
+instance AE.FromJSON Todo where
+  parseJSON = AE.withObject "Todo" $ \obj -> do
+    todoUserId <- obj AE..: "userId"
+    todoTitle <- obj AE..: "title"
+    todoCompleted <- obj AE..: "completed"
+    return $ Todo todoUserId todoTitle todoCompleted
+
+instance AE.ToJSON Todo where
+  toJSON Todo
+    { todoUserId
+    , todoTitle
+    , todoCompleted
+    } = AE.object
+        [ "userId" AE..= todoUserId
+        , "title" AE..= todoTitle
+        , "completed" AE..= todoCompleted
+        ]
 
 type Todos = [Todo]
 

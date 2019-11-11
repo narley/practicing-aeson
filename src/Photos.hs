@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Photos
   ( Photo (..)
@@ -29,27 +29,27 @@ data Photo = Photo
 instance AE.ToJSON Photo where
   toJSON
     Photo
-    { photoAlbumId = photoAlbumId'
-    , photoId = photoId'
-    , photoTitle = photoTitle'
-    , photoURL = photoURL'
-    , thumbnailURL = thumbnailURL'
+    { photoAlbumId
+    , photoId
+    , photoTitle
+    , photoURL
+    , thumbnailURL
     } = AE.object
-    [ "albumId" AE..= photoAlbumId'
-    , "id" AE..= photoId'
-    , "title" AE..= photoTitle'
-    , "url" AE..= photoURL'
-    , "thumbnailURL" AE..= thumbnailURL'
+    [ "albumId" AE..= photoAlbumId
+    , "id" AE..= photoId
+    , "title" AE..= photoTitle
+    , "url" AE..= photoURL
+    , "thumbnailURL" AE..= thumbnailURL
     ]
 
 instance AE.FromJSON Photo where
   parseJSON = AE.withObject "Photo" $ \obj -> do
-    photoAlbumId' <- obj AE..: "albumId"
-    photoId' <- obj AE..: "id"
-    photoTitle' <- obj AE..: "title"
-    photoURL' <- obj AE..: "url"
-    thumbnailURL' <- obj AE..: "thumbnailUrl"
-    return $ Photo photoAlbumId' photoId' photoTitle' photoURL' thumbnailURL'
+    photoAlbumId <- obj AE..: "albumId"
+    photoId <- obj AE..: "id"
+    photoTitle <- obj AE..: "title"
+    photoURL <- obj AE..: "url"
+    thumbnailURL <- obj AE..: "thumbnailUrl"
+    return $ Photo photoAlbumId photoId photoTitle photoURL thumbnailURL
 
 type Photos = [Photo]
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Users
   ( User (..)
@@ -35,33 +35,34 @@ type Users = [User]
 
 instance AE.ToJSON User where
   toJSON User
-    { userId = userId'
-    , userName = userName'
-    , userEmail = userEmail'
-    , address = address'
-    , userPhone = userPhone'
-    , userWebsite = userWebsite'
-    , userCompany = userCompany' }
+    { userId
+    , userName
+    , userEmail
+    , address
+    , userPhone
+    , userWebsite
+    , userCompany
+    }
     = AE.object
-        [ "id" AE..= userId'
-        , "name" AE..= userName'
-        , "email" AE..= userEmail'
-        , "address" AE..= address'
-        , "phone" AE..= userPhone'
-        , "website" AE..= userWebsite'
-        , "company" AE..= userCompany'
+        [ "id" AE..= userId
+        , "name" AE..= userName
+        , "email" AE..= userEmail
+        , "address" AE..= address
+        , "phone" AE..= userPhone
+        , "website" AE..= userWebsite
+        , "company" AE..= userCompany
         ]
 
 instance AE.FromJSON User where
   parseJSON = AE.withObject "User" $ \obj -> do
-    userId' <- obj AE..: "id"
-    userName' <- obj AE..: "username"
-    userEmail' <- obj AE..: "email"
-    address' <- obj AE..: "address"
-    userPhone' <- obj AE..: "phone"
-    userWebsite' <- obj AE..: "website"
-    userCompany' <- obj AE..: "company"
-    return $ User userId' userName' userEmail' address' userPhone' userWebsite' userCompany'
+    userId <- obj AE..: "id"
+    userName <- obj AE..: "username"
+    userEmail <- obj AE..: "email"
+    address <- obj AE..: "address"
+    userPhone <- obj AE..: "phone"
+    userWebsite <- obj AE..: "website"
+    userCompany <- obj AE..: "company"
+    return $ User userId userName userEmail address userPhone userWebsite userCompany
 
 data Address = Address
   { street :: T.Text
@@ -74,27 +75,27 @@ data Address = Address
 
 instance AE.ToJSON Address where
   toJSON Address
-    { street = street'
-    , suite = suite'
-    , city = city'
-    , postcode = postcode'
-    , geo = geo'
+    { street
+    , suite
+    , city
+    , postcode
+    , geo
     } = AE.object
-        [ "street" AE..= street'
-        , "suite" AE..= suite'
-        , "city" AE..= city'
-        , "zipcode" AE..= postcode'
-        , "geo" AE..= geo'
+        [ "street" AE..= street
+        , "suite" AE..= suite
+        , "city" AE..= city
+        , "zipcode" AE..= postcode
+        , "geo" AE..= geo
         ]
 
 instance AE.FromJSON Address where
   parseJSON = AE.withObject "Address" $ \obj -> do
-    street' <- obj AE..: "street"
-    suite' <- obj AE..: "suite"
-    city' <- obj AE..: "city"
-    postcode' <- obj AE..: "zipcode"
-    geo' <- obj AE..: "geo"
-    return $ Address street' suite' city' postcode' geo'
+    street <- obj AE..: "street"
+    suite <- obj AE..: "suite"
+    city <- obj AE..: "city"
+    postcode <- obj AE..: "zipcode"
+    geo <- obj AE..: "geo"
+    return $ Address street suite city postcode geo
 
 data Geo = Geo
   { lat :: T.Text
@@ -104,18 +105,18 @@ data Geo = Geo
 
 instance AE.ToJSON Geo where
   toJSON Geo
-    { lat = lat'
-    , lng = lng'
+    { lat
+    , lng
     } = AE.object
-        [ "lat" AE..= lat'
-        , "lng" AE..= lng'
+        [ "lat" AE..= lat
+        , "lng" AE..= lng
         ]
 
 instance AE.FromJSON Geo where
   parseJSON = AE.withObject "Geo" $ \obj -> do
-    lat' <- obj AE..: "lat"
-    lng' <- obj AE..: "lng"
-    return $ Geo lat' lng'
+    lat <- obj AE..: "lat"
+    lng <- obj AE..: "lng"
+    return $ Geo lat lng
 
 data Company = Company
   { companyName :: T.Text
@@ -126,21 +127,21 @@ data Company = Company
 
 instance AE.ToJSON Company where
   toJSON Company
-    { companyName = companyName'
-    , catchPhrase = catchPhrase'
-    , bs = bs'
+    { companyName
+    , catchPhrase
+    , bs
     } = AE.object
-        [ "name" AE..= companyName'
-        , "catchPhrase" AE..= catchPhrase'
-        , "bs" AE..= bs'
+        [ "name" AE..= companyName
+        , "catchPhrase" AE..= catchPhrase
+        , "bs" AE..= bs
         ]
 
 instance AE.FromJSON Company where
   parseJSON = AE.withObject "Company" $ \obj -> do
-    companyName' <- obj AE..: "name"
-    catchPhrase' <- obj AE..: "catchPhrase"
-    bs' <- obj AE..: "bs"
-    return $ Company companyName' catchPhrase' bs'
+    companyName <- obj AE..: "name"
+    catchPhrase <- obj AE..: "catchPhrase"
+    bs <- obj AE..: "bs"
+    return $ Company companyName catchPhrase bs
 
 
 getUsers :: IO Users

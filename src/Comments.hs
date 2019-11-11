@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Comments
   ( Comment (..)
@@ -29,24 +29,24 @@ data Comment = Comment
 
 instance AE.ToJSON Comment where
   toJSON Comment
-    { commentId = commentId'
-    , name = name'
-    , email = email'
-    , body = body'
+    { commentId
+    , name
+    , email
+    , body
     } = AE.object
-    [ "id" AE..= commentId'
-    , "name" AE..= name'
-    , "email" AE..= email'
-    , "body" AE..= body'
+    [ "id" AE..= commentId
+    , "name" AE..= name
+    , "email" AE..= email
+    , "body" AE..= body
     ]
 
 instance AE.FromJSON Comment where
   parseJSON = AE.withObject "Comment" $ \obj -> do
-    commentId' <- obj AE..: "id"
-    name' <- obj AE..: "name"
-    email' <- obj AE..: "email"
-    body' <- obj AE..: "body"
-    return $ Comment commentId' name' email' body'
+    commentId <- obj AE..: "id"
+    name <- obj AE..: "name"
+    email <- obj AE..: "email"
+    body <- obj AE..: "body"
+    return $ Comment commentId name email body
 
 type Comments = [Comment]
 

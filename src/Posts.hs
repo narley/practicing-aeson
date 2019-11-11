@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Posts
   ( Post (..)
@@ -30,11 +31,11 @@ type Posts = [Post]
 
 instance AE.FromJSON Post where
   parseJSON = AE.withObject "Post" $ \obj -> do
-    userId' <- obj AE..: "userId"
-    postId' <- obj AE..: "id"
-    title' <- obj AE..: "title"
-    body' <- obj AE..: "body"
-    return (Post userId' postId' title' body')
+    userId <- obj AE..: "userId"
+    postId <- obj AE..: "id"
+    title <- obj AE..: "title"
+    body <- obj AE..: "body"
+    return (Post userId postId title body)
 -- Or using <$> and <*> when all the data fields match the JSON key fields
 -- <$> :: Function f => (a -> b) -> fa -> fb
 -- <*> :: Applicative f => f (a -> b) -> fa -> fb
@@ -50,11 +51,16 @@ instance AE.FromJSON Post where
 --        <*> obj .: "body"
 
 instance AE.ToJSON Post where
-  toJSON Post { userId = userId', postId = postId', title = title', body = body' } =
-    AE.object [ "userId" AE..= userId'
-           , "id" AE..= postId'
-           , "title" AE..= title'
-           , "body" AE..= body'
+  toJSON Post
+    { userId
+    , postId
+    , title
+    , body
+    } =
+    AE.object [ "userId" AE..= userId
+           , "id" AE..= postId
+           , "title" AE..= title
+           , "body" AE..= body
            ]
 
 getPosts :: IO Posts
